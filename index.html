@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Experiencia & Batalla de Talentos — SENA CMTC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --night:   #09090f;
+      --deep:    #111122;
+      --card:    #16162a;
+      --gold:    #f5c842;
+      --gold2:   #e8aa22;
+      --coral:   #e8523a;
+      --lavender:#c4b5e8;
+      --white:   #ffffff;
+      --muted:   #8888aa;
+      --border:  rgba(245,200,66,0.15);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--night);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 3rem;
+      background: rgba(9,9,15,0.75);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--gold);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.25s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      position: relative;
+      padding: 6rem 2rem 4rem;
+      overflow: hidden;
+    }
+
+    /* Stage spotlight beams */
+    .spotlight {
+      position: absolute; top: -10%; left: 50%; transform: translateX(-50%);
+      width: 900px; height: 700px;
+      pointer-events: none;
+    }
+    .beam {
+      position: absolute; top: 0;
+      width: 180px; height: 100%;
+      border-radius: 0 0 50% 50%;
+      opacity: 0.07;
+      transform-origin: top center;
+    }
+    .beam-1 { left: 20%; background: linear-gradient(180deg, var(--gold), transparent); animation: sway1 7s ease-in-out infinite; }
+    .beam-2 { left: 38%; background: linear-gradient(180deg, #fff, transparent); animation: sway2 9s ease-in-out infinite; opacity: 0.05; }
+    .beam-3 { left: 55%; background: linear-gradient(180deg, var(--coral), transparent); animation: sway1 8s ease-in-out infinite reverse; }
+
+    @keyframes sway1 { 0%,100% { transform: rotate(-8deg); } 50% { transform: rotate(8deg); } }
+    @keyframes sway2 { 0%,100% { transform: rotate(5deg); }  50% { transform: rotate(-5deg); } }
+
+    /* Stars / particles */
+    .stars {
+      position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse at 20% 20%, rgba(245,200,66,0.04) 0%, transparent 60%),
+                  radial-gradient(ellipse at 80% 80%, rgba(232,82,58,0.04) 0%, transparent 60%);
+    }
+
+    .hero-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 1.6rem;
+      position: relative;
+    }
+    .hero-eyebrow::before, .hero-eyebrow::after {
+      content: '—';
+      margin: 0 0.8rem;
+      opacity: 0.5;
+    }
+
+    h1.hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 9vw, 7.5rem);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      position: relative;
+      margin-bottom: 0.3rem;
+    }
+    h1.hero-title .line-gold { color: var(--gold); display: block; }
+    h1.hero-title .line-amp  { color: var(--muted); font-style: italic; font-size: 0.55em; display: block; margin: 0.1em 0; }
+    h1.hero-title .line-coral{ color: var(--coral); display: block; }
+
+    .hero-sub {
+      max-width: 580px;
+      margin: 2.2rem auto 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+      font-weight: 300;
+      line-height: 1.75;
+    }
+
+    .hero-cta {
+      margin-top: 3rem;
+      display: flex; gap: 1.2rem; flex-wrap: wrap; justify-content: center;
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.9rem 2.2rem;
+      border-radius: 3px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      background: var(--gold);
+      color: var(--night);
+      box-shadow: 0 0 30px rgba(245,200,66,0.3);
+    }
+    .btn-primary:hover { box-shadow: 0 0 45px rgba(245,200,66,0.5); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--white);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* scroll indicator */
+    .scroll-hint {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+      color: var(--muted); font-size: 0.7rem; letter-spacing: 0.15em;
+      text-transform: uppercase; font-family: 'Space Mono', monospace;
+      animation: bob 2.5s ease-in-out infinite;
+    }
+    .scroll-hint::after {
+      content: '';
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+    @keyframes bob { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)} }
+
+    /* ── SECTION BASE ── */
+    section { padding: 6rem 2rem; }
+
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--gold);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+
+    h2.section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 1.2rem;
+    }
+    h2.section-title em { color: var(--gold); font-style: italic; }
+
+    .section-desc {
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.8;
+      max-width: 580px;
+    }
+
+    .container { max-width: 1140px; margin: 0 auto; }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--border) 30%, var(--border) 70%, transparent);
+      margin: 0 2rem;
+    }
+
+    /* ── CATEGORÍAS ── */
+    #categorias { background: var(--deep); }
+    .cat-header {
+      display: flex; flex-direction: column; align-items: flex-start;
+      margin-bottom: 3.5rem;
+    }
+
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .cat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+      cursor: default;
+    }
+    .cat-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 0 1px var(--gold2);
+      border-color: var(--gold2);
+    }
+
+    .cat-img {
+      width: 100%; aspect-ratio: 16/9; object-fit: cover;
+      display: block;
+      filter: brightness(0.85) saturate(0.9);
+      transition: filter 0.3s;
+    }
+    .cat-card:hover .cat-img { filter: brightness(1) saturate(1.1); }
+
+    .cat-body { padding: 1.4rem 1.6rem 1.8rem; }
+    .cat-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(245,200,66,0.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      margin-bottom: 0.9rem;
+      border: 1px solid var(--border);
+    }
+    h3.cat-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      color: var(--white);
+    }
+    .cat-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.7; }
+
+    /* ── PARTICIPANTES ── */
+    #participantes { background: var(--night); }
+
+    .part-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: end;
+      margin-bottom: 3.5rem;
+    }
+
+    .part-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.8rem;
+    }
+
+    .part-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .part-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+    }
+    .part-img-wrap { position: relative; overflow: hidden; }
+    .part-img {
+      width: 100%; aspect-ratio: 3/4; object-fit: cover;
+      display: block;
+      transition: transform 0.4s;
+      filter: brightness(0.8) saturate(0.85);
+    }
+    .part-card:hover .part-img { transform: scale(1.04); filter: brightness(0.9) saturate(1); }
+
+    .part-badge {
+      position: absolute; top: 1rem; left: 1rem;
+      background: var(--gold);
+      color: var(--night);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.6rem;
+      border-radius: 2px;
+    }
+    .part-body { padding: 1.4rem 1.5rem 1.8rem; }
+    h3.part-cat {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--coral);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    h4.part-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.6rem;
+    }
+    .part-desc { color: var(--muted); font-size: 0.85rem; line-height: 1.7; }
+
+    /* ── SEGURIDAD ── */
+    #seguridad {
+      background: var(--deep);
+      border-top: 1px solid var(--border);
+    }
+
+    .seg-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .seg-icons {
+      display: flex; gap: 1.2rem; justify-content: center;
+      margin: 2rem 0;
+    }
+    .seg-icon-box {
+      width: 70px; height: 70px; border-radius: 50%;
+      background: rgba(245,200,66,0.08);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+    }
+    .seg-text {
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.85;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .seg-text strong { color: var(--gold); font-weight: 600; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--night);
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+    .footer-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      .nav-links a { font-size: 0.75rem; }
+      .part-header { grid-template-columns: 1fr; }
+      .cat-grid, .part-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .nav-links { display: none; }
+    }
+
+    /* ── FADE-IN on scroll ── */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* stagger */
+    .reveal:nth-child(2) { transition-delay: 0.1s; }
+    .reveal:nth-child(3) { transition-delay: 0.2s; }
+    .reveal:nth-child(4) { transition-delay: 0.3s; }
+    .reveal:nth-child(5) { transition-delay: 0.35s; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">SENA CMTC &nbsp;·&nbsp; Talentos</div>
+    <ul class="nav-links">
+      <li><a href="#hero">Inicio</a></li>
+      <li><a href="#categorias">Categorías</a></li>
+      <li><a href="#participantes">Participantes</a></li>
+      <li><a href="#seguridad">Logística</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="spotlight">
+      <div class="beam beam-1"></div>
+      <div class="beam beam-2"></div>
+      <div class="beam beam-3"></div>
+    </div>
+    <div class="stars"></div>
+
+    <p class="hero-eyebrow">SENA CMTC &nbsp;· &nbsp;2024</p>
+
+    <h1 class="hero-title">
+      <span class="line-gold">Experiencia</span>
+      <span class="line-amp">&amp;</span>
+      <span class="line-coral">Batalla de Talentos</span>
+    </h1>
+
+    <p class="hero-sub">
+      Un espacio donde los aprendices del SENA CMTC demostraron su creatividad,
+      talento y dedicación a través de distintas expresiones artísticas y culturales.
+    </p>
+
+    <div class="hero-cta">
+      <a href="#categorias" class="btn btn-primary">Ver Categorías</a>
+      <a href="#participantes" class="btn btn-ghost">Participantes</a>
+    </div>
+
+    <div class="scroll-hint">Explorar</div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CATEGORÍAS -->
+  <section id="categorias">
+    <div class="container">
+      <div class="cat-header">
+        <p class="section-label reveal">Disciplinas del evento</p>
+        <h2 class="section-title reveal">Las <em>categorías</em><br>en escena</h2>
+        <p class="section-desc reveal">
+          Durante la Batalla de Talentos, los aprendices tuvieron la oportunidad
+          de demostrar sus habilidades en diferentes disciplinas artísticas y culturales.
+        </p>
+      </div>
+
+      <div class="cat-grid">
+
+        <div class="cat-card reveal">
+          <img class="cat-img"
+               src="https://santiagoop2006.github.io/Batalla_de_talentos/Imagenes/baile.jpeg"
+               alt="Baile en la Batalla de Talentos" loading="lazy" />
+          <div class="cat-body">
+            <div class="cat-icon">💃</div>
+            <h3 class="cat-name">Baile</h3>
+            <p class="cat-desc">Los participantes mostraron un alto nivel de complejidad en sus actuaciones, ya sea en pareja o en solitario. Mucho trabajo detrás de esas coreografías, con pasos bastante llamativos.</p>
+          </div>
+        </div>
+
+        <div class="cat-card reveal">
+          <img class="cat-img"
+               src="https://santiagoop2006.github.io/Batalla_de_talentos/Imagenes/canto.jpeg"
+               alt="Canto en la Batalla de Talentos" loading="lazy" />
+          <div class="cat-body">
+            <div class="cat-icon">🎤</div>
+            <h3 class="cat-name">Canto</h3>
+            <p class="cat-desc">Los aprendices interpretaron diferentes piezas musicales, mostrando su talento vocal, afinación y gran capacidad artística ante el público.</p>
+          </div>
+        </div>
+
+        <div class="cat-card reveal">
+          <img class="cat-img"
+               src="https://santiagoop2006.github.io/Batalla_de_talentos/Imagenes/interpretacion.jpeg"
+               alt="Interpretación artística" loading="lazy" />
+          <div class="cat-body">
+            <div class="cat-icon">🎭</div>
+            <h3 class="cat-name">Interpretación</h3>
+            <p class="cat-desc">Espacio dedicado a la expresión escénica, las artes plásticas, la comunicación y la magnífica puesta en escena de los participantes.</p>
+          </div>
+        </div>
+
+        <div class="cat-card reveal">
+          <img class="cat-img"
+               src="https://santiagoop2006.github.io/Batalla_de_talentos/Imagenes/lectura.jpeg"
+               alt="Lectura en la Batalla de Talentos" loading="lazy" />
+          <div class="cat-body">
+            <div class="cat-icon">📖</div>
+            <h3 class="cat-name">Lectura</h3>
+            <p class="cat-desc">Los participantes demostraron habilidades de narración, lectura expresiva, poesía y elocuente comunicación oral.</p>
+          </div>
+        </div>
+
+        <div class="cat-card reveal">
+          <img class="cat-img"
+               src="https://santiagoop2006.github.io/Batalla_de_talentos/Imagenes/fotografia.jpeg"
+               alt="Fotografía y Artes Visuales" loading="lazy" />
+          <div class="cat-body">
+            <div class="cat-icon">📷</div>
+            <h3 class="cat-name">Fotografía y Artes Visuales</h3>
+            <p class="cat-desc">Exhibición de trabajos fotográficos y galerías enfocadas en la creatividad, composición exacta y pura expresión visual de los aprendices.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PARTICIPANTES -->
+  <section id="participantes">
+    <div class="container">
+      <div class="part-header">
+        <div>
+          <p class="section-label reveal">Los que brillaron</p>
+          <h2 class="section-title reveal"><em>Participantes</em><br>Destacados</h2>
+        </div>
+        <p class="section-desc reveal">
+          Conoce a los aprendices que brillaron en el escenario y dejaron huella
+          con su dedicación, pasión y asombroso talento artístico.
+        </p>
+      </div>
+
+      <div class="part-grid">
+
+        <div class="part-card reveal">
+          <div class="part-img-wrap">
+            <img class="part-img"
+                 src="https://santiagoop2006.github.io/Batalla_de_talentos/Imagenes/participante4.jpeg"
+                 alt="Participante destacado Canto" loading="lazy" />
+            <span class="part-badge">🥇 1er Puesto</span>
+          </div>
+          <div class="part-body">
+            <p class="part-cat">Canto</p>
+            <h4 class="part-title">Participante Destacado</h4>
+            <p class="part-desc">Un compañero que demostró bastante complejidad a la hora de realizar su interpretación y que, gracias a esto, se llevó el primer puesto en su categoría con su excelente voz y disciplina.</p>
+          </div>
+        </div>
+
+        <div class="part-card reveal">
+          <div class="part-img-wrap">
+            <img class="part-img"
+                 src="https://santiagoop2006.github.io/Batalla_de_talentos/Imagenes/participante3.jpeg"
+                 alt="Participante destacado Lectura" loading="lazy" />
+            <span class="part-badge">⭐ Destacado</span>
+          </div>
+          <div class="part-body">
+            <p class="part-cat">Lectura</p>
+            <h4 class="part-title">Participante Destacado</h4>
+            <p class="part-desc">Un reconocimiento especial al increíble talento detrás de la obra expuesta. Con una técnica impecable y una narrativa visual profunda, logró cautivar tanto al jurado como al público.</p>
+          </div>
+        </div>
+
+        <div class="part-card reveal">
+          <div class="part-img-wrap">
+            <img class="part-img"
+                 src="https://santiagoop2006.github.io/Batalla_de_talentos/Imagenes/participante2.jpeg"
+                 alt="Participante destacado Lectura 2" loading="lazy" />
+            <span class="part-badge">⭐ Destacado</span>
+          </div>
+          <div class="part-body">
+            <p class="part-cat">Lectura</p>
+            <h4 class="part-title">Participante Destacado</h4>
+            <p class="part-desc">Compañero que demostró alta complejidad a la hora de redactar sus textos, historias de la vida real y una gran conciencia, aparte de una gran puesta en escena al narrar sus escritos.</p>
+          </div>
+        </div>
+
+        <div class="part-card reveal">
+          <div class="part-img-wrap">
+            <img class="part-img"
+                 src="https://santiagoop2006.github.io/Batalla_de_talentos/Imagenes/participante1.jpeg"
+                 alt="Participante destacada Baile" loading="lazy" />
+            <span class="part-badge">⭐ Destacada</span>
+          </div>
+          <div class="part-body">
+            <p class="part-cat">Baile</p>
+            <h4 class="part-title">Participante Destacada</h4>
+            <p class="part-desc">Una compañera bastante destacada en su categoría por el gran control en una amplia variedad de ritmos y sus pasos con sutileza y mucho trabajo.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SEGURIDAD -->
+  <section id="seguridad">
+    <div class="container">
+      <div class="seg-inner">
+        <p class="section-label reveal">Organización del evento</p>
+        <h2 class="section-title reveal">Logística y <em>Seguridad</em></h2>
+
+        <div class="seg-icons reveal">
+          <div class="seg-icon-box">🛡️</div>
+          <div class="seg-icon-box">📋</div>
+          <div class="seg-icon-box">✅</div>
+        </div>
+
+        <p class="seg-text reveal">
+          Queremos destacar que la <strong>Batalla de Talentos</strong> se llevó a cabo con un éxito rotundo
+          en su gestión organizativa. El evento contó con un excelente despliegue logístico y de seguridad,
+          garantizando un control de acceso ordenado, fluido y seguro a la hora de ingresar al auditorio,
+          manteniendo la tranquilidad y el bienestar de todos los asistentes durante todo el desarrollo del evento.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Talentos SENA CMTC</div>
+    <p class="footer-sub">Experiencia &amp; Batalla de Talentos &nbsp;·&nbsp; 2024</p>
+  </footer>
+
+  <script>
+    // Reveal on scroll
+    const observer = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+      { threshold: 0.12 }
+    );
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
